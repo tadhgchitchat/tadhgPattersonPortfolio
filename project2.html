@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Project One — Tadhg Patterson Portfolio</title>
+
+<style>
+:root{
+  --bg:#587042;
+  --text:#FAF7E6;
+  --accent:#F6C531;
+  --panel:#A9B494;
+  --highlight:#F8DE8C;
+  --border:2px solid #FAF7E6;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:Helvetica, Arial, sans-serif;
+  overflow-x:hidden;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+  background-size:40px 40px;
+  z-index:-1;
+}
+
+/* NAV */
+
+header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:var(--bg);
+  border-bottom:var(--border);
+}
+
+.nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 24px;
+}
+
+.logo{
+  font-size:1.2rem;
+  font-weight:900;
+  text-transform:uppercase;
+  color:var(--text);
+  text-decoration:none;
+}
+
+.logo:hover{
+  color:var(--text);
+  text-decoration:none;
+}
+
+.nav-links{
+  display:flex;
+  gap:20px;
+  align-items:center;
+}
+
+.nav-links a{
+  text-decoration:none;
+  color:var(--highlight);
+  font-weight:700;
+  text-transform:uppercase;
+  transition:0.2s ease;
+  font-size:0.9rem;
+}
+
+.nav-links a:hover{
+  opacity:0.7;
+}
+
+.back-link{
+  text-decoration:none;
+  color:var(--highlight);
+  font-weight:700;
+  text-transform:uppercase;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  transition:0.2s ease;
+}
+
+.back-link:hover{
+  opacity:0.7;
+}
+
+/* BREADCRUMB */
+
+.breadcrumb{
+  padding:18px 20px;
+  border-bottom:var(--border);
+  font-size:0.9rem;
+  text-transform:uppercase;
+}
+
+.breadcrumb a{
+  color:var(--highlight);
+  text-decoration:none;
+  font-weight:700;
+}
+
+.breadcrumb a:hover{
+  opacity:0.7;
+}
+
+/* HERO */
+
+.hero{
+  border-bottom:var(--border);
+  padding:40px 20px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02)), var(--bg);
+}
+
+.hero h1{
+  font-size:clamp(3rem, 10vw, 8rem);
+  line-height:0.9;
+  text-transform:uppercase;
+  font-weight:900;
+  letter-spacing:-0.08em;
+  margin-bottom:20px;
+}
+
+.hero p{
+  font-size:1.1rem;
+  font-weight:700;
+  text-transform:uppercase;
+  max-width:700px;
+}
+
+/* SHOWCASE */
+
+.showcase{
+  padding:60px 20px;
+  border-bottom:var(--border);
+}
+
+.showcase-image{
+  width:100%;
+  max-width:1200px;
+  margin:0 auto 60px;
+  border:var(--border);
+  overflow:hidden;
+}
+
+.showcase-image img{
+  width:100%;
+  height:auto;
+  display:block;
+  filter:
+    contrast(1.05)
+    saturate(0.85)
+    brightness(0.95);
+}
+
+/* CONTENT */
+
+.content{
+  max-width:900px;
+  margin:0 auto;
+  padding:60px 20px;
+  border-bottom:var(--border);
+}
+
+.content h2{
+  font-size:3rem;
+  margin-bottom:20px;
+  text-transform:uppercase;
+  font-weight:900;
+  letter-spacing:-0.05em;
+}
+
+.content p{
+  font-size:1.1rem;
+  line-height:1.6;
+  text-transform:uppercase;
+  font-weight:700;
+  margin-bottom:20px;
+}
+
+/* GALLERY */
+
+.gallery{
+  padding:60px 20px;
+  border-bottom:var(--border);
+}
+
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+  gap:20px;
+  max-width:1200px;
+  margin:0 auto;
+}
+
+.gallery-item{
+  border:var(--border);
+  overflow:hidden;
+}
+
+.gallery-item img{
+  width:100%;
+  height:400px;
+  object-fit:cover;
+  display:block;
+  filter:
+    contrast(1.05)
+    saturate(0.85)
+    brightness(0.95);
+  transition:transform 0.4s ease;
+}
+
+.gallery-item:hover img{
+  transform:scale(1.04);
+}
+
+/* LIGHTBOX */
+.lightbox{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.85);
+  z-index:2000;
+  visibility:hidden;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 220ms ease, visibility 220ms ease;
+}
+.lightbox.open{
+  visibility:visible;
+  opacity:1;
+  pointer-events:auto;
+}
+.lightbox img{
+  max-width:92%;
+  max-height:92%;
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  border:4px solid rgba(255,255,255,0.03);
+  background:var(--bg);
+}
+
+.lightbox video{
+  max-width:92%;
+  max-height:92%;
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  border:4px solid rgba(255,255,255,0.03);
+  background:var(--bg);
+}
+
+.lightbox-button{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  border:none;
+  background:rgba(255,255,255,0.08);
+  color:var(--text);
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.65rem;
+  transition:background 0.2s ease;
+}
+
+.lightbox-button:hover{
+  background:rgba(255,255,255,0.16);
+}
+
+.lightbox-button.left{
+  left:20px;
+}
+
+.lightbox-button.right{
+  right:20px;
+}
+
+/* RELATED PROJECTS */
+
+.related{
+  padding:60px 20px;
+  border-bottom:var(--border);
+}
+
+.related h2{
+  font-size:2.5rem;
+  margin-bottom:40px;
+  text-transform:uppercase;
+  font-weight:900;
+  letter-spacing:-0.05em;
+  max-width:1200px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.related-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+  gap:20px;
+  max-width:1200px;
+  margin:0 auto;
+}
+
+.related-card{
+  border:var(--border);
+  overflow:hidden;
+  text-decoration:none;
+  color:inherit;
+  cursor:pointer;
+  transition:0.25s ease;
+  display:flex;
+  flex-direction:column;
+}
+
+.related-card:hover{
+  transform:translateY(-4px);
+}
+
+.related-card img{
+  width:100%;
+  height:250px;
+  object-fit:cover;
+  display:block;
+  filter:
+    contrast(1.05)
+    saturate(0.85)
+    brightness(0.95);
+  transition:transform 0.4s ease;
+}
+
+.related-card:hover img{
+  transform:scale(1.04);
+}
+
+.related-card-content{
+  padding:18px;
+  background:var(--panel);
+  flex-grow:1;
+}
+
+.related-card h3{
+  font-size:1.3rem;
+  font-weight:900;
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+
+.related-card p{
+  font-size:0.85rem;
+  line-height:1.4;
+  text-transform:uppercase;
+  font-weight:700;
+}
+
+/* FOOTER */
+
+footer{
+  border-top:var(--border);
+  padding:20px;
+  font-weight:700;
+  text-transform:uppercase;
+  text-align:left;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+  .hero h1{
+    font-size:2.5rem;
+  }
+
+  .content h2{
+    font-size:1.8rem;
+  }
+
+  .content p{
+    font-size:1rem;
+  }
+
+  .nav-links{
+    gap:10px;
+  }
+
+  .nav-links a{
+    font-size:0.7rem;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="nav">
+    <a href="index.html" class="logo">Tadhg Patterson</a>
+    <div class="nav-links">
+      <a href="index.html#work">Work</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#contact">Contact</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Motion Poster Design</h1>
+  <p>Motion posters to develop design skills over the summer of 2025</p>
+</section>
+
+<section class="content">
+  <h2>Overview</h2>
+  <p>
+   Experimenting with video content in photoshop, I decided to keep elements of stationary design and enhance them with the inclusion of video. The poster acts as a frame to the content one would think of, when they see these characters
+  </p>
+
+</section>
+
+<section class="gallery">
+  <div class="gallery-grid">
+    <div class="gallery-item" data-video="videos/oetsu.mp4">
+      <img src="images/oetsu.png" alt="Photo 1">
+    </div>
+    <div class="gallery-item" data-video="videos/grimmjow.mp4">
+      <img src="images/grimmThumbail.png" alt="Photo 2">
+    </div>
+    <div class="gallery-item" data-video="videos/shunsui.mp4">
+      <img src="images/shunsuiKyoraku.png" alt="Photo 3">
+    </div>
+  </div>
+</section>
+
+<section class="related">
+  <h2>More Projects</h2>
+  <div class="related-grid">
+    <a href="project1.html" class="related-card">
+      <img src="images/IMG_033322.jpg" alt="Photography Collection">
+      <div class="related-card-content">
+        <h3>Photography Collection</h3>
+        <p>Photography series from October-November of 2025</p>
+      </div>
+    </a>
+    <a href="project3.html" class="related-card">
+      <img src="images/bCards.jpg" alt="Project Three">
+      <div class="related-card-content">
+        <h3>Applied Branding</h3>
+        <p>Examples of brand identity</p>
+      </div>
+    </a>
+    <a href="project4.html" class="related-card">
+      <img src="images/30TiltedBackLeft.png" alt="Project Four">
+      <div class="related-card-content">
+        <h3>UX Designs</h3>
+        <p>Multiple user experience app design projects</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<footer>
+  © 2026 Tadhg Patterson
+</footer>
+
+<!-- Lightbox markup -->
+<div class="lightbox" id="lightbox" aria-hidden="true" role="dialog">
+  <button class="lightbox-button left" type="button" aria-label="Previous image">‹</button>
+  <img id="lightbox-img" src="" alt="">
+  <video id="lightbox-video" controls playsinline style="display:none"></video>
+  <button class="lightbox-button right" type="button" aria-label="Next image">›</button>
+</div>
+
+<script>
+// Lightbox supporting still images that can open and play a video (if provided).
+(function(){
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightbox-img');
+  const lbVideo = document.getElementById('lightbox-video');
+  const prevButton = lightbox.querySelector('.lightbox-button.left');
+  const nextButton = lightbox.querySelector('.lightbox-button.right');
+  const items = Array.from(document.querySelectorAll('.gallery-item'));
+  let currentIndex = 0;
+
+  const gallery = items.map(item => {
+    const img = item.querySelector('img');
+    return {
+      src: img ? img.src : '',
+      alt: img ? (img.alt || '') : '',
+      video: item.dataset.video || null
+    };
+  });
+
+  function showIndex(index){
+    if(index < 0) index = gallery.length - 1;
+    if(index >= gallery.length) index = 0;
+    currentIndex = index;
+    const entry = gallery[currentIndex];
+    if(entry.video){
+      lbImg.style.display = 'none';
+      lbVideo.style.display = '';
+      if(lbVideo.src !== entry.video) lbVideo.src = entry.video;
+      lbVideo.currentTime = 0;
+      lbVideo.play().catch(()=>{});
+    } else {
+      if(lbVideo){ lbVideo.pause(); lbVideo.src = ''; lbVideo.style.display = 'none'; }
+      lbImg.style.display = '';
+      lbImg.src = entry.src;
+      lbImg.alt = entry.alt;
+    }
+  }
+
+  function open(index){
+    showIndex(index);
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close(){
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+    if(lbVideo){ lbVideo.pause(); lbVideo.src = ''; lbVideo.style.display = 'none'; }
+  }
+
+  items.forEach((item, index)=>{
+    const img = item.querySelector('img');
+    const trigger = img || item;
+    if(img) img.style.cursor = 'zoom-in';
+    trigger.addEventListener('click', ()=> open(index));
+  });
+
+  prevButton.addEventListener('click', ()=> showIndex(currentIndex - 1));
+  nextButton.addEventListener('click', ()=> showIndex(currentIndex + 1));
+
+  lightbox.addEventListener('click', (e)=>{
+    if(e.target === lightbox) close();
+  });
+
+  document.addEventListener('keydown', (e)=>{
+    if(!lightbox.classList.contains('open')) return;
+    if(e.key === 'Escape') return close();
+    if(e.key === 'ArrowLeft') return showIndex(currentIndex - 1);
+    if(e.key === 'ArrowRight') return showIndex(currentIndex + 1);
+  });
+})();
+</script>
+</body>
+</html>
