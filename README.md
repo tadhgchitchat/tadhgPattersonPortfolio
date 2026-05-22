@@ -1,2 +1,0 @@
-# tadhgPattersonPortfolio
-My portfolio website :)
