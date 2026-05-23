@@ -453,6 +453,12 @@ footer{
     <div class="gallery-item" data-video="videos/roughCutOneWorkshop.mp4">
       <img src="images/taraWorkshop.png" alt="Photo 3">
     </div>
+    <div class="gallery-item" data-image="images/taraTrifold-1.png">
+      <img src="images/taraTrifold-1.png" alt="Overview photo">
+    </div>
+    <div class="gallery-item" data-image="images/taraTrifold-2.png">
+      <img src="images/taraTrifold-2.png" alt="Overview photo">
+    </div>
   </div>
 </section>
 
@@ -508,10 +514,12 @@ footer{
 
   const gallery = items.map(item => {
     const img = item.querySelector('img');
+    const hasVideo = !!item.dataset.video;
+    const hasImage = !!item.dataset.image;
     return {
-      src: img ? img.src : '',
-      alt: img ? (img.alt || '') : '',
-      video: item.dataset.video || null
+      type: hasVideo ? 'video' : 'image',
+      src: hasVideo ? item.dataset.video : (hasImage ? item.dataset.image : (img ? img.src : '')),
+      alt: img ? (img.alt || '') : ''
     };
   });
 
@@ -520,10 +528,10 @@ footer{
     if(index >= gallery.length) index = 0;
     currentIndex = index;
     const entry = gallery[currentIndex];
-    if(entry.video){
+    if(entry.type === 'video'){
       lbImg.style.display = 'none';
       lbVideo.style.display = '';
-      if(lbVideo.src !== entry.video) lbVideo.src = entry.video;
+      if(lbVideo.src !== entry.src) lbVideo.src = entry.src;
       lbVideo.currentTime = 0;
       lbVideo.play().catch(()=>{});
     } else {
