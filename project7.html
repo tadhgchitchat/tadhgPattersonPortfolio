@@ -223,75 +223,14 @@ header{
 
 .gallery-item img{
   width:100%;
-  height:400px;
-  object-fit:cover;
+  height:auto;
+  max-height:75vh;
+  object-fit:contain;
   display:block;
   filter:
     contrast(1.05)
     saturate(0.85)
     brightness(0.95);
-  transition:transform 0.4s ease;
-}
-
-.gallery-item:hover img{
-  transform:scale(1.04);
-}
-
-/* LIGHTBOX */
-.lightbox{
-  position:fixed;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,0.85);
-  z-index:2000;
-  visibility:hidden;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity 220ms ease, visibility 220ms ease;
-}
-.lightbox.open{
-  visibility:visible;
-  opacity:1;
-  pointer-events:auto;
-}
-.lightbox img{
-  max-width:92%;
-  max-height:92%;
-  box-shadow:0 20px 60px rgba(0,0,0,0.6);
-  border:4px solid rgba(255,255,255,0.03);
-  background:var(--bg);
-}
-
-.lightbox-button{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  border:none;
-  background:rgba(255,255,255,0.08);
-  color:var(--text);
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:1.65rem;
-  transition:background 0.2s ease;
-}
-
-.lightbox-button:hover{
-  background:rgba(255,255,255,0.16);
-}
-
-.lightbox-button.left{
-  left:20px;
-}
-
-.lightbox-button.right{
-  right:20px;
 }
 
 /* RELATED PROJECTS */
@@ -422,8 +361,14 @@ footer{
 </header>
 
 <section class="hero">
-  <h1>3D Modeling</h1>
-  <p>Examples of 3D modeling work</p>
+  <h1>Net Art Gif</h1>
+  <p>This piece was created based on the concept of ‘Protocol’: “a system of rules that explain the correct conduct and procedures to be followed in formal situations”. It aims to reflect upon the hottest fad for authoritarian leadership, mass surveillance.
+	The primary symbol is that of a moving eye, having been glitched (through RGB Shift, Wobble, Jitter etc) and overlaid over a series of background images(discussed later). The viewer is never left unobserved, for the duration of the .gif
+	The majority of the cycling images in the background of the .gif were sourced from patents on surveillance technology. The rise of surveillance companies such as Palantir, Flock, Axon and Motorola Solutions means that the need for people to obey societal norms, or ‘protocols’, is constant. 
+	Additionally, schematics for a panopticon were included. In the 1700s, Jeremy Bentham conceptualised the panopticon, a prison where inmates are unaware of when they are being watched, resulting in every prisoner acting as though they were. Now some fear that we have entered something of a societal panopticon, not only through surveillance cameras, but also personal video recording methods such as mobile phones or metaglasses.
+	Lastly, a diagram of a lobotomy is included to reference the mind-numbing that occurs when under constant worry of being observed. Additionally, they were used as a ‘cure’ for mental illness. Against a more human approach, scrambling a patient’s brain into conformity was more convenient.
+	The .gif also has phases where an ASCII filter is applied, alluding to the digital operations behind surveillance states. 
+</p>
 </section>
 
 <section class="content">
@@ -439,13 +384,7 @@ footer{
 <section class="gallery">
   <div class="gallery-grid">
     <div class="gallery-item">
-      <img src="images/mayaFP.png" alt="Photo 1">
-    </div>
-    <div class="gallery-item">
-      <img src="images/mayaSucc.png" alt="Photo 2">
-    </div>
-    <div class="gallery-item">
-      <img src="images/mayaToast.png" alt="Photo 3">
+      <img src="videos/Timeline1-ezgif.com-optimize.gif" alt="Animated 3D modeling project">
     </div>
   </div>
 </section>
@@ -481,66 +420,5 @@ footer{
   © 2026 Tadhg Patterson
 </footer>
 
-<!-- Lightbox markup -->
-<div class="lightbox" id="lightbox" aria-hidden="true" role="dialog">
-  <button class="lightbox-button left" type="button" aria-label="Previous image">‹</button>
-  <img id="lightbox-img" src="" alt="">
-  <button class="lightbox-button right" type="button" aria-label="Next image">›</button>
-</div>
-
-<script>
-// Simple lightbox for gallery images
-(function(){
-  const lightbox = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lightbox-img');
-  const prevButton = lightbox.querySelector('.lightbox-button.left');
-  const nextButton = lightbox.querySelector('.lightbox-button.right');
-  const thumbs = Array.from(document.querySelectorAll('.gallery-item img'));
-  let currentIndex = 0;
-
-  const gallery = thumbs.map(img => ({ src: img.src, alt: img.alt || '' }));
-
-  function showIndex(index){
-    if(index < 0) index = gallery.length - 1;
-    if(index >= gallery.length) index = 0;
-    currentIndex = index;
-    lbImg.src = gallery[currentIndex].src;
-    lbImg.alt = gallery[currentIndex].alt;
-  }
-
-  function open(index){
-    showIndex(index);
-    lightbox.classList.add('open');
-    lightbox.setAttribute('aria-hidden','false');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function close(){
-    lightbox.classList.remove('open');
-    lightbox.setAttribute('aria-hidden','true');
-    document.body.style.overflow = '';
-    setTimeout(()=> lbImg.src = '', 250);
-  }
-
-  thumbs.forEach((img, index)=>{
-    img.style.cursor = 'zoom-in';
-    img.addEventListener('click', ()=> open(index));
-  });
-
-  prevButton.addEventListener('click', ()=> showIndex(currentIndex - 1));
-  nextButton.addEventListener('click', ()=> showIndex(currentIndex + 1));
-
-  lightbox.addEventListener('click', (e)=>{
-    if(e.target === lightbox) close();
-  });
-
-  document.addEventListener('keydown', (e)=>{
-    if(!lightbox.classList.contains('open')) return;
-    if(e.key === 'Escape') return close();
-    if(e.key === 'ArrowLeft') return showIndex(currentIndex - 1);
-    if(e.key === 'ArrowRight') return showIndex(currentIndex + 1);
-  });
-})();
-</script>
 </body>
 </html>
